@@ -1,0 +1,7 @@
+syntax: glob
+.settings/
+.project
+.classpath
+target/
+extproc-sample-web/src/main/webapp/WEB-INF/classes/
+extproc-sample-web/src/main/webapp/WEB-INF/lib/
