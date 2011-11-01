@@ -50,18 +50,6 @@
 						<configuration>
 						</configuration>
 					</execution>
-					<execution>
-						<id>copy-dependency-sources</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory> ${project.build.directory}/dependency-sources</outputDirectory>
-							<classifier>sources</classifier>
-							<failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
-						</configuration>
-					</execution>
 				</executions>
 			</plugin>
 		</plugins>
