@@ -3,8 +3,8 @@
 
 <tiles-definitions>
 
-	<definition name="jobs/list" extends="page">
-		<put-attribute name="content" value="/WEB-INF/views/jobs/list.jsp" />
+	<definition name="fileUpload/fileUpload" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/fileUpload/fileUpload.jsp" />
 	</definition>
 
 </tiles-definitions>

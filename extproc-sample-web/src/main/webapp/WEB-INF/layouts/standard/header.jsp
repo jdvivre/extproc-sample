@@ -1,19 +1,13 @@
-<%@ page session="false" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<h1><a title="online batch demo" href="<c:url value="/" />"><img src="<c:url value="/resources/logo-header.png" />" alt="jcf" /></a></h1>
-<div id="nav">
-	<ul>
-		<c:if test="${account == null}">
-		<li><a href="<c:url value="/signin" />">Sign In</a></li>
-		</c:if>
-		<c:if test="${account != null}">
-		<li><a href="<c:url value="/members/${account.profileId}" />"><c:out value="${account.firstName}" /></a></li>
-		<li><a href="<c:url value="/invite" />">Invite</a></li>
-		<li><a href="<c:url value="/events" />">Events</a></li>
-		<li><a href="<c:url value="/develop/apps" />">Develop</a></li>
-		<li><a href="<c:url value="/settings" />">Settings</a></li>
-		<li><a href="<c:url value="/signout" />">Sign Out</a></li>
-		</c:if>	
+<div class="topbar-inner">
+	<div class="container-fluid"><a class="brand" href="/extproc-sample-web/">JCF SAMPLE</a>
+	<ul class="nav">
+		<li class="active"><a href="/extproc-sample-web/">Home</a></li>
+		<li><a href="#about">About</a></li>
+		<li><a href="#contact">Contact</a></li>
 	</ul>
+	<p class="pull-right">Logged in as <a href="#">JCF</a></p>
+	</div>
 </div>

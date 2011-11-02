@@ -1,6 +1,10 @@
 package jcf.sample.extprocdemo.config;
 
+import java.io.File;
+
 import jcf.extproc.ExternalProcessOperator;
+import jcf.extproc.fileaccess.FileAccess;
+import jcf.extproc.fileaccess.FileAccessImpl;
 import jcf.extproc.spring.ExternalProcessOperatorFactory;
 
 import org.springframework.context.annotation.Bean;
@@ -15,11 +19,16 @@ public class Component {
 	@Bean
 	public ExternalProcessOperator getOperator() throws Exception {
 		ExternalProcessOperatorFactory factory = new ExternalProcessOperatorFactory();
-		factory.setBaseDirectory("D:/tmp/jobs");
+		factory.setBaseDirectory("c:/tmp/jobs");
 //		factory.setBaseDirectory("c:/tmp/batch_repository");
 		factory.setCharset("MS949");
 		factory.setTaskExecutor(new SimpleAsyncTaskExecutor());
-		
+
 		return factory.getObject();
+	}
+
+	@Bean
+	public FileAccess getFileAccess(){
+		return new FileAccessImpl(new File("c:/tmp/jobs"));
 	}
 }
