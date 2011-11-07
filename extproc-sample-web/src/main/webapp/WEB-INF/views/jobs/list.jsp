@@ -35,7 +35,7 @@
  </tbody>
 </table>
 </c:if>
-<script type="text/javascript"><!--
+<script type="text/javascript">
 (function(jQuery){
 
 	var j = jQuery,
@@ -44,24 +44,12 @@
 	init();
 
 	function init(){
-		setProgressValue(0);
-
 		j.get('/extproc-sample-web/status', function( data ) {
-			var status = null;
 
-			if(data===1){
-				status = 'run';
-				changeStatus(status);
-			}else{
-				status = 'stop';
-				changeStatus(status);
-			}
 		});
-
-		getStatus(sampleJobName);
 	}
 
-	function bindStatusPollingEvent(target){
+	function bindStatusPollingEvent(){
 		j(window).focus(function(event){
 			getStatus(sampleJobName);
 	    });
@@ -79,7 +67,6 @@
 	    if ( status === 'run') {
 			if ( typeof data != 'undefined') {
 		        if(data === 0){
-		        	// 로직
 		        }
 		        clearTimeout( timeoutId );
 		        timeoutId = setTimeout( function() {getStatus(jobName);}, 100 );
@@ -91,4 +78,4 @@
 	}
 
 })(jQuery);
---></script>
+</script>

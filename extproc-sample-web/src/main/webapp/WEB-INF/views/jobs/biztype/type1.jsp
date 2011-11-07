@@ -170,9 +170,6 @@
       j.get('/extproc-sample-web/jobs/type1/'+jobName+'/status', function( data ) {
 		var running = parseStatus(data)[0],
 			nullOfInstanceId = parseStatus(data)[1];
-		console.log(running);
-		console.log(nullOfInstanceId);
-		console.log((running || nullOfInstanceId));
       	if(!(running || nullOfInstanceId)){
       		changeStatus('complete');
 	        clearTimeout( timeoutId );
