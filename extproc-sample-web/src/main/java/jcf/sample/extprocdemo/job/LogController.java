@@ -8,7 +8,6 @@ import java.nio.charset.Charset;
 
 import jcf.extproc.ExternalProcessOperator;
 import jcf.extproc.fileaccess.FileAccess;
-import jcf.extproc.fileaccess.FileInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,16 +30,9 @@ public class LogController {
 	public String log(Model model, @PathVariable String jobName, @RequestParam String sInstanceId) {
 		String job = jobName; // escape /
 		long instanceId = Long.valueOf(sInstanceId);
-		Iterable<FileInfo> list = fileAccess.list(operator.getJobInstanceInfo(job, instanceId));
 
-		File file = null;
+		File file = fileAccess.getLogFile(operator.getJobInstanceInfo(job, instanceId));
 
-		for (FileInfo fileInfo : list) {
-			System.out.println(fileInfo);
-			if(fileInfo.getName().equals("stdout.log")){
-				file = fileAccess.get(operator.getJobInstanceInfo(job, instanceId), "stdout.log");
-			}
-		}
 
 		if(file!=null){
 			StringBuilder sb = new StringBuilder();

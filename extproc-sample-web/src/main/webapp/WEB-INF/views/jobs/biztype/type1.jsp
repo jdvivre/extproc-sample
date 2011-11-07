@@ -6,7 +6,8 @@
 
 <h2>업무별 배치 (화면유형 1)</h2>
 
-<h3>업무 2 진행 상황</h3>
+<h3>결과 파일 다운로드 예제</h3>
+
 <div class="row">
 	<div class="span4">
 		<h4>현재 상태</h4>
@@ -21,59 +22,170 @@
 		</div>
 	</div>
 </div>
+<iframe id="myIFrm" src="" style="visibility:hidden"></iframe>
 <script type="text/javascript">
 (function(jQuery){
-	var j = jQuery;
+	var j = jQuery,
+		timeoutId = null,
+		sampleJobName= 'FileWrittingJob';
 
 	init();
-	bind();
 
 	function init(){
-		var status = j('#jobStatus').attr('stauts');
+		$("#jobSelect").change(function(e) {
+			sampleJobName = $("#jobSelect").val();
+			clearTimeout(timeoutId);
+			getStatus(sampleJobName);
+		});
 
-		disableAllBtn();
+		j.get('/extproc-sample-web/status/'+sampleJobName, function( data ) {
+			var status = null;
 
-		switch (status) {
-		case 'stop':
-			j('button#run').removeClass('disabled');
-			break;
-		case 'run':
-			j('button#stop').removeClass('disabled');
-			break;
-		case 'complete':
-			j('button#download').removeClass('disabled');
-			break;
-		default:
-			break;
+			if(data===1){
+				status = 'run';
+				changeStatus(status);
+			}else{
+				status = 'stop';
+				changeStatus(status);
+			}
+
+			disableAllBtn();
+
+			switch (status) {
+				case 'stop':
+					j('button#run').removeClass('disabled');
+					bindBtnEvent('button#run');
+					break;
+				case 'run':
+					j('button#stop').removeClass('disabled');
+					bindBtnEvent('button#stop');
+					break;
+				case 'complete':
+					j('button#download').removeClass('disabled');
+					bindBtnEvent('button#download');
+					break;
+				default: break;
+			}
+			bindStatusPollingEvent();
+		});
+
+		getStatus(sampleJobName);
+	}
+
+	function bindStatusPollingEvent(target){
+		j(window).focus(function(event){
+			getStatus(sampleJobName);
+	    });
+
+		j(window).blur(function(event){
+			clearTimeout(timeoutId);
+	    });
+	}
+
+	function bindBtnEvent(target){
+		switch (target) {
+			case "button#run":
+				j("button#run").bind('click',function(){
+					changeStatus('run');
+					j.post('/extproc-sample-web/jobs/'+sampleJobName+'/run');
+					getStatus(sampleJobName);
+				});
+				break;
+			case "button#stop":
+				j("button#stop").bind('click',function(){
+					changeStatus('stop');
+					j.post('/extproc-sample-web/jobs/'+sampleJobName+'/stop');
+				});
+				break;
+			case "button#download":
+				j("button#download").bind('click',function(){
+					$("#myIFrm").attr("src",'/extproc-sample-web/jobs/'+sampleJobName+'/download/sample-file.txt');
+				});
+				break;
+			default:
+				break;
 		}
 	}
 
-	function changeStatus(toStats){
-		j('#jobStatus').attr('stauts',toStats);
+	function unbindAllBtnEvent(){
+		j("button#download").unbind('click');
+		j("button#stop").unbind('click');
+		j("button#run").unbind('click');
 	}
 
+	function changeStatus(toStats){
+		var statusLabel = "";
+
+		unbindAllBtnEvent();
+
+		j('#jobStatus').attr('stauts',toStats);
+
+		switch (toStats) {
+			case 'stop': statusLabel = "중지됨";
+				bindBtnEvent('button#run');
+				j('button#run').removeClass('disabled');
+				j('button#stop').addClass('disabled');
+				break;
+			case 'run': statusLabel = "실행중";
+				bindBtnEvent('button#stop');
+				j('button#run').addClass('disabled');
+				j('button#stop').removeClass('disabled');
+				break;
+			case 'complete': statusLabel = "중지됨";
+				bindBtnEvent('button#download');
+				bindBtnEvent('button#run');
+				j('button#run').removeClass('disabled');
+				j('button#download').removeClass('disabled');
+				j('button#stop').addClass('disabled');
+				break;
+			default:
+				break;
+		}
+
+		j('#jobStatus').html(statusLabel);
+	}
 	function disableAllBtn(){
 		j('#btnContainer').find('button').each(function(index,el){
 			j(this).addClass('disabled');
 		});
 	}
 
-	function bind(){
-		j("button#run").bind('click',function(){
-			changeStatus('run');
-			j.post('/extproc-sample-web/jobs/run?jobName=TESTJOB');
+	function parseStatus(data){
+		var statusArray = parseInt(data,16).toString(2).split(''),
+			resultArray = [];
 
-		});
+		if(statusArray.length === 1){
+			statusArray.push("0");
+		}
+		resultArray.push(parseInt(statusArray[0]));
+		resultArray.push(parseInt(statusArray[1]));
 
-		j("button#stop").bind('click',function(){
-			changeStatus('stop');
-			j.post('/');
-		});
-
-		j("button#download").bind('click',function(){
-			j.post('/');
-		});
+		return resultArray;
 	}
+
+	function getStatus( jobName ) {
+	  var status =  j('#jobStatus').attr('stauts'),
+	      jobName=jobName;
+
+      j.get('/extproc-sample-web/jobs/type1/'+jobName+'/status', function( data ) {
+		var running = parseStatus(data)[0],
+			nullOfInstanceId = parseStatus(data)[1];
+		console.log(running);
+		console.log(nullOfInstanceId);
+		console.log((running || nullOfInstanceId));
+      	if(!(running || nullOfInstanceId)){
+      		changeStatus('complete');
+	        clearTimeout( timeoutId );
+	        timeoutId = setTimeout( function() {getStatus(jobName);}, 5000 );
+      	}else if(running === "0"){
+      		changeStatus('stop');
+	        clearTimeout( timeoutId );
+	        timeoutId = setTimeout( function() {getStatus(jobName);}, 5000 );
+      	}else{
+	      	timeoutId = setTimeout( function() {getStatus(jobName);}, 100 );
+      	}
+	   });
+	}
+
 })(jQuery);
 </script>
-

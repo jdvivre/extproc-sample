@@ -12,23 +12,16 @@
     <meta name="keywords" content="JCF SAMPLE" />
 
 	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css">
 
     <style type="text/css">
       body {
         padding-top: 60px;
       }
     </style>
-	<c:forEach var="style" items="${styles}">
-	<link rel="stylesheet" href="<c:url value="/resources/${style}" />" type="text/css" media="all" />
-	</c:forEach>
-
-	<tiles:useAttribute id="styles" name="styles" classname="java.util.List" ignore="true" />
-
-	<c:forEach var="meta" items="${metadata}">
-	<meta name="${meta.key}" content="${meta.value}"/>
-	</c:forEach>
 
 	<script type="text/javascript" src="<c:url value="/resources/jquery/1.6/jquery.js" />"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="<c:url value="/resources/jquery-cookie/1.0/jquery-cookie.js" />"></script>
 </head>
 <body>
@@ -57,10 +50,13 @@
 		    </footer>
 		</div>
 	</div>
+
 	<tiles:useAttribute id="scripts" name="scripts" classname="java.util.List" ignore="true" />
+
 	<c:forEach var="script" items="${scripts}">
 		<script type="text/javascript" src="<c:url value="/resources/${script}" />"></script>
 	</c:forEach>
+
 	<script type="text/javascript">
 		$.cookie('Greenhouse.timeZoneOffset', new Date().getTimezoneOffset() * 60000);
 	</script>

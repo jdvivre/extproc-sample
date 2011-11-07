@@ -100,6 +100,18 @@
   		<version>3.7.4-SNAPSHOT</version>
   	</dependency>
   			
+  	<dependency>
+  		<groupId>jcf</groupId>
+  		<artifactId>jcf-cmd</artifactId>
+  		<version>3.7.4-SNAPSHOT</version>
+  		<scope>compile</scope>
+  	</dependency>
+  	<dependency>
+  		<groupId>jcf</groupId>
+  		<artifactId>jcf-upload</artifactId>
+  		<version>3.7.4-SNAPSHOT</version>
+  		<scope>compile</scope>
+  	</dependency>
 	</dependencies>
 	<repositories>
 		<!-- For testing against latest Spring snapshots -->

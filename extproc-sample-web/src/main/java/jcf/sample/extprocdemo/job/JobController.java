@@ -52,5 +52,4 @@ public class JobController {
 		return "jobs/instances/list";
 	}
 
-
 }

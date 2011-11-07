@@ -13,8 +13,9 @@ public class FileWrittingRunner implements CommandLineRunner {
 		FileWriter fileWriter = null;
 		try {
 			fileWriter = new FileWriter(file);
+			Thread.sleep(4000);
 			fileWriter.write("TEST TEST TEST");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new UnsupportedOperationException("ERROR OCCUR WHILE WRITTING A FILE");
 		} finally{
 			try {

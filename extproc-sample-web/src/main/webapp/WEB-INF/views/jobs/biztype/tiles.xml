@@ -11,4 +11,8 @@
 		<put-attribute name="content" value="/WEB-INF/views/jobs/biztype/type2.jsp" />
 	</definition>
 
+	<definition name="jobs/biztype/type3" extends="page">
+		<put-attribute name="content" value="/WEB-INF/views/jobs/biztype/type3.jsp" />
+	</definition>
+
 </tiles-definitions>

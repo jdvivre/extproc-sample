@@ -9,7 +9,7 @@
 
 <h2>업무별 배치 (화면유형 2)</h2>
 
-<h3>진행 상황 예제</h3>
+<h3>병렬처리 진행 상황 예제</h3>
 <div class="row">
 	<div class="span4">
 		<h4>현재 상태</h4>
@@ -113,6 +113,11 @@
 					j.post('/extproc-sample-web/jobs/'+sampleJobName+'/stop');
 				});
 				break;
+			case "button#download":
+				j("button#download").bind('click',function(){
+					j.post('/');
+				});
+				break;
 			default:
 				break;
 		}
@@ -143,10 +148,6 @@
 				setProgressBarImg("green");
 				break;
 			case 'complete': statusLabel = "완료됨";
-				bindBtnEvent('button#download');
-				j('button#run').removeClass('disabled');
-				j('button#download').removeClass('disabled');
-				j('button#stop').addClass('disabled');
 				break;
 			default:
 				break;
@@ -170,6 +171,7 @@
 			if ( typeof data != 'undefined') {
 		        if(data === 0){
 		        	changeStatus('stop');
+		        	bindBtnEvent('button#run');
 		        }
 		        clearTimeout( timeoutId );
 		        timeoutId = setTimeout( function() {getStatus(jobName);}, 100 );
