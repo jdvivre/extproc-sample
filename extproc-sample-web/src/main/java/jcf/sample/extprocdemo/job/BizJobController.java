@@ -3,7 +3,6 @@ package jcf.sample.extprocdemo.job;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,6 @@ import jcf.extproc.ExternalProcessOperator;
 import jcf.extproc.fileaccess.FileAccess;
 import jcf.extproc.process.ExternalProcess;
 import jcf.extproc.process.JobInstanceInfo;
-import jcf.upload.persistence.FileLoader;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,9 +77,7 @@ public class BizJobController {
 ///extproc-sample-web/jobs/'+sampleJobName+'/download
 	@RequestMapping(value="/jobs/{jobName}/download/*", method=RequestMethod.GET)
 	public void downloadFile(Model model, HttpServletResponse response, @PathVariable String jobName) throws Exception {
-		List<Long> jobInstanceIdList = operator.getJobInstanceIdList(jobName, null);
-
-		JobInstanceInfo jobInstanceInfo = operator.getJobInstanceInfo(jobName, jobInstanceIdList.size()-1);
+		JobInstanceInfo jobInstanceInfo = operator.getLastInstanceInfo(jobName);
 
 		response.setContentType("application/octet;charset=utf-8");
 		response.setHeader("Content-Disposition", "attachment;");

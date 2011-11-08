@@ -3,12 +3,15 @@ package jcf.sample.extprocdemo.job;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
 import jcf.extproc.ExternalProcessOperator;
 import jcf.extproc.fileaccess.FileAccess;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +30,7 @@ public class LogController {
 	private FileAccess fileAccess;
 
 	@RequestMapping(value="/jobs/log/{jobName}", method=RequestMethod.GET)
-	public String log(Model model, @PathVariable String jobName, @RequestParam String sInstanceId) {
+	public String log(Model model, @PathVariable String jobName, @RequestParam String sInstanceId) throws IOException {
 		String job = jobName; // escape /
 		long instanceId = Long.valueOf(sInstanceId);
 
@@ -35,23 +38,8 @@ public class LogController {
 
 
 		if(file!=null){
-			StringBuilder sb = new StringBuilder();
-			try {
-				InputStreamReader reader = new InputStreamReader(new FileInputStream(file), Charset.forName("UTF-8"));
+			model.addAttribute("logContents", FileUtils.readFileToString(file));
 
-				BufferedReader bufferedReader = new BufferedReader(reader);
-
-				String line;
-				while ((line = bufferedReader.readLine()) != null) {
-					sb.append(line);
-				}
-			} catch (Exception e) {
-				throw new UnsupportedOperationException("Error occur while handling logging file",e);
-			}
-
-			String ret = sb.toString();
-
-			model.addAttribute("logContents", ret);
 		}else{
 			model.addAttribute("logContents", "");
 		}
