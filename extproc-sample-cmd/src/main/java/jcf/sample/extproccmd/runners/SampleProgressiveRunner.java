@@ -13,31 +13,16 @@ public class SampleProgressiveRunner extends AbstractProgressiveRunner {
 
 	@Override
 	protected void run(ProgressWriter progressWriter) {
-		progressWriter.setInt("prgoress", 0);
-
 		try {
-			Thread.sleep(1000);
-			progressWriter.setInt("prgoress", 10);
-			Thread.sleep(1000);
-			progressWriter.setInt("prgoress", 20);
-			Thread.sleep(1000);
-			progressWriter.setInt("prgoress", 30);
-			Thread.sleep(1000);
-			progressWriter.setInt("prgoress", 40);
-			Thread.sleep(1000);
-			progressWriter.setInt("prgoress", 70);
-			Thread.sleep(1000);
-			progressWriter.setInt("prgoress", 80);
-			Thread.sleep(1000);
-			progressWriter.setInt("prgoress", 90);
+			for (int i = 0; i <= 100; i+= 10) {
+				Thread.sleep(1000);
+				progressWriter.setInt("prgoress", i);
+				System.out.println("progress " + i);
+			}
+			
 		} catch (InterruptedException e) {
-
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		progressWriter.setInt("prgoress", 100);
 	}
-
 
 }

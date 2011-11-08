@@ -99,6 +99,11 @@
   		<artifactId>jcf-extproc</artifactId>
   		<version>3.7.4-SNAPSHOT</version>
   	</dependency>
+  	<dependency>
+  		<groupId>jcf</groupId>
+  		<artifactId>jcf-util</artifactId>
+  		<version>3.7.4-SNAPSHOT</version>
+  	</dependency>
   			
   	<dependency>
   		<groupId>jcf</groupId>

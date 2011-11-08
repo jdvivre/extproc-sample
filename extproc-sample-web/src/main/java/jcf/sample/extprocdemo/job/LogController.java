@@ -1,17 +1,19 @@
 package jcf.sample.extprocdemo.job;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletResponse;
 
 import jcf.extproc.ExternalProcessOperator;
+import jcf.extproc.config.ExtProcConstant;
 import jcf.extproc.fileaccess.FileAccess;
+import jcf.util.tail.JavaTail;
+import jcf.util.tail.StreamWriter;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +31,7 @@ public class LogController {
 	@Autowired
 	private FileAccess fileAccess;
 
-	@RequestMapping(value="/jobs/log/{jobName}", method=RequestMethod.GET)
+	@RequestMapping(value="/jobs/logAll/{jobName}", method=RequestMethod.GET)
 	public String log(Model model, @PathVariable String jobName, @RequestParam String sInstanceId) throws IOException {
 		String job = jobName; // escape /
 		long instanceId = Long.valueOf(sInstanceId);
@@ -47,5 +49,41 @@ public class LogController {
 		model.addAttribute("jobInstance", sInstanceId);
 
 		return "jobs/log";
+	}
+	
+	@RequestMapping(value="/jobs/log/{jobName}", method=RequestMethod.GET)
+	public void tail(@PathVariable String jobName, @RequestParam String sInstanceId, HttpServletResponse response) throws IOException, InterruptedException {
+		String job = jobName; // escape /
+		long instanceId = Long.valueOf(sInstanceId);
+
+		File file = fileAccess.getLogFile(operator.getJobInstanceInfo(job, instanceId));
+
+		if(file!=null){
+			
+			response.setContentType("text/html;charset=UTF-8");
+			final OutputStream os = response.getOutputStream();
+			
+			new JavaTail(file).tailf(new StreamWriter() {
+				
+				PrintWriter pw = new PrintWriter(os, true);
+				
+				public void println(String line) {
+					pw.println(line);
+				}
+				
+				public void open() {
+					pw.println("<pre>");
+				}
+				
+				public void heartBeat() throws IOException {
+					pw.print("");
+				}
+				
+				public void close() {
+					pw.println("</pre>");
+				}
+			}, ExtProcConstant.END_MARKER);
+		}
+
 	}
 }

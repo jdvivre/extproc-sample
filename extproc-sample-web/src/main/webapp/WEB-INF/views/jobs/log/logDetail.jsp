@@ -7,6 +7,6 @@
 <h2><c:out value="${jobName}" escapeXml="true" /> :: <c:out value="${jobInstance}" escapeXml="true" /> - 로그</h2>
 <div class="hero-unit">
 <pre>
-<c:out value="${logContents}" escapeXml="false" />
+<c:out value="${logContents}" escapeXml="true" />
 </pre>
 </div>

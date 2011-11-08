@@ -15,7 +15,7 @@
      <th>User Name</th>
      <th>Work Directory</th>
      <th>Description</th>
-     <th>is Running</th>
+     <th>status</th>
    </tr>
  </thead>
  <tbody>
@@ -29,7 +29,7 @@
      <td><c:out value="${job.user}" escapeXml="true" /></td>
      <td><c:out value="${job.workDirectory}" escapeXml="true" /></td>
      <td><c:out value="${job.description}" escapeXml="true" /></td>
-     <td></td>
+     <td><c:out value="${job.result}" escapeXml="true" /><c:if test="${job.running}">(*)</c:if></td>
    </tr>
  </c:forEach>
  </tbody>
