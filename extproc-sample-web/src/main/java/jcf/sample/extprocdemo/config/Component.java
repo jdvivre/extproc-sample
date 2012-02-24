@@ -16,11 +16,12 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 @ImportResource("classpath:jcf/sample/extprocdemo/config/component.xml")
 public class Component {
 
+	private static final String baseDirectory = "/home/setq/workspace/tmp/jobs";
+
 	@Bean
 	public ExternalProcessOperator getOperator() throws Exception {
 		ExternalProcessOperatorFactory factory = new ExternalProcessOperatorFactory();
-		factory.setBaseDirectory("c:/tmp/jobs");
-//		factory.setBaseDirectory("c:/tmp/batch_repository");
+		factory.setBaseDirectory(baseDirectory);
 		factory.setCharset("MS949");
 		factory.setTaskExecutor(new SimpleAsyncTaskExecutor());
 
@@ -29,6 +30,6 @@ public class Component {
 
 	@Bean
 	public FileAccess getFileAccess(){
-		return new FileAccessImpl(new File("c:/tmp/jobs"));
+		return new FileAccessImpl(new File(baseDirectory));
 	}
 }

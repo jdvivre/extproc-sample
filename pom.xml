@@ -10,4 +10,16 @@
 		<module>extproc-sample-web</module>
 		<module>extproc-sample-cmd</module>
 	</modules>
+	<repositories>
+		<repository>
+        <id>jcf-cloudbees-snapshots</id>
+        <url>http://repository-setq.forge.cloudbees.com/snapshot/</url>
+        <releases>
+           <enabled>false</enabled>
+        </releases>
+        <snapshots>
+          <enabled>true</enabled>
+        </snapshots>        
+     </repository>
+	</repositories>
 </project>
